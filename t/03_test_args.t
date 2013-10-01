@@ -2,25 +2,19 @@
 
 # Test test argument passing capability
 
+use Test::More tests => 9;
 use strict;
-BEGIN {
-    $|  = 1;
-    $^W = 1;
-}
-
-# use Test::More tests => 11;
-use Test::More 'no_plan';
+use warnings;
 use pler;
 
 # install mock
 {
     no strict 'refs';
-
-    # local $^W = 0;
-    *{"pler::handoff"} = sub { [ @_ ] };
+    no warnings 'redefine';
+    *{"pler::handoff"} = sub (@) { [@_] };
 }
 
-# Filter tests
+# pler::main() tests
 my @tests = (
     [qw{ t/ext/print_args.t                }], [ $^X, '-d', 't/ext/print_args.t'                   ],
     [qw{ t/ext/print_args.t --             }], [ $^X, '-d', 't/ext/print_args.t'                   ],
