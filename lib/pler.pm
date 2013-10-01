@@ -265,7 +265,6 @@ sub main {
 			pop @dirs;
 			next;
 		}
-$DB::single++;
 
 		# This is a distroot
 		my $distroot = catpath( $v, catdir(@dirs), "" );
