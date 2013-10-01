@@ -11,7 +11,9 @@ use pler;
 {
     no strict 'refs';
     no warnings 'redefine';
-    *{"pler::handoff"} = sub (@) { [@_] };
+    *{"pler::handoff"} = sub (@) { [@_] };  # return args as arrayref
+    *{"pler::message"} = sub ($) { };       # silence "# Debugging t/ext/print_args.t..."
+
 }
 
 # pler::main() tests
