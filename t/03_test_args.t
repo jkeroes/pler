@@ -2,7 +2,7 @@
 
 # Test test argument passing capability
 
-use Test::More tests => 9;
+use Test::More;
 use strict;
 use warnings;
 use pler;
@@ -26,6 +26,7 @@ my @tests = (
     [qw{ t/ext/print_args.t -- --foo 1 2   }], [ $^X, '-d', 't/ext/print_args.t', '--foo', 1, 2    ],
     [qw{ t/ext/print_args.t -- 1 2 --foo   }], [ $^X, '-d', 't/ext/print_args.t', 1, 2, '--foo'    ],
 );
+plan tests => scalar @tests / 2;
 
 while (my ($argv, $expected) = splice @tests, 0, 2) {
     local @ARGV    = @$argv;
