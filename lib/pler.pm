@@ -16,7 +16,7 @@ use Probe::Perl           0.01 ();
 
 use vars qw{$VERSION};
 BEGIN {
-		$VERSION = '1.06';
+		$VERSION = '1.07';
 }
 
 # Does exec work on this platform
