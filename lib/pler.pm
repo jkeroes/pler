@@ -225,9 +225,6 @@ sub handoff (@) {
 }
 
 
-
-
-
 #####################################################################
 # Main Script
 
@@ -237,7 +234,7 @@ sub main {
 	Getopt::Long::Configure('no_ignore_case');
 	Getopt::Long::GetOptions(
 		'help' => \&help,
-		'V'    => sub { print "pler $VERSION\n"; exit(0) }, 
+		'V'    => sub { print "pler $VERSION\n"; exit(0) },
 		'w'    => sub { push @SWITCHES, '-w' },
 	);
 
@@ -391,7 +388,7 @@ sub main {
 	unless ( pler->is_verbose ) {
 		message( "# Debugging $script...\n" );
 	}
-	my @cmd = ( perl, @flags, '-d', $script );
+	my @cmd = ( perl, @flags, '-d', $script, @ARGV );
 	local $ENV{PERL5LIB} = defined($ENV{PERL5LIB})
 		? join( $path_sep, @PERL5LIB, $ENV{PERL5LIB} )
 		: join( $path_sep, @PERL5LIB );
