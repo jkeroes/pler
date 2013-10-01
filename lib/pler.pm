@@ -251,7 +251,7 @@ sub main {
 	Cwd::chdir(curdir());
 	my $orig = $ENV{PWD} or die "Failed to get original directory";
 
-		# Can we locate the distribution root
+	# Can we locate the distribution root
 	my ($v,$d,$f) = splitpath($ENV{PWD}, 'nofile');
 	my @dirs      = splitdir($d);
 	while ( @dirs ) {
@@ -265,9 +265,10 @@ sub main {
 			pop @dirs;
 			next;
 		}
+$DB::single++;
 
 		# This is a distroot
-		my $distroot = catpath( $v, catdir(@dirs), undef );
+		my $distroot = catpath( $v, catdir(@dirs), "" );
 		Cwd::chdir($distroot);
 		last;
 	}
