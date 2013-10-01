@@ -423,7 +423,7 @@ sub filter {
 
 sub help { print <<'END_HELP'; exit(0); }
 Usage:
-	pler [options] [file/pattern]
+	pler [options] [file/pattern] [-- arguments for test files]
 
 Options:
 		-V              Print the pler version
@@ -453,6 +453,13 @@ B<pler> checks that the environment is sound, runs some cleanup tasks
 if needed, makes sure you are in the right directory, and then hands off
 to the perl debugger as normal.
 
+Command-line arguments are assumed to be test files or substrings of
+filenames. pler will search through the t/ and xt/ subdirectories and
+test all matching files.
+
+Arguments can be passed to the test file(s) on the command line after
+a --.
+
 =head1 TO DO
 
 - Tweak some small terminal related issues on Win32
@@ -475,7 +482,7 @@ L<prove>, L<http://ali.as/>
 
 =head1 COPYRIGHT
 
-Copyright 2006 - 2010 Adam Kennedy.
+Copyright 2006 - 2013 Adam Kennedy.
 
 This program is free software; you can redistribute
 it and/or modify it under the same terms as Perl itself.
