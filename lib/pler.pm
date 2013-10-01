@@ -16,7 +16,7 @@ use Probe::Perl           0.01 ();
 
 use vars qw{$VERSION};
 BEGIN {
-        $VERSION = '1.06';
+		$VERSION = '1.06';
 }
 
 # Does exec work on this platform
@@ -197,7 +197,7 @@ sub verbose ($) {
 }
 
 sub message ($) {
-        print $_[0];
+		print $_[0];
 }
 
 sub error (@) {
@@ -251,7 +251,7 @@ sub main {
 	Cwd::chdir(curdir());
 	my $orig = $ENV{PWD} or die "Failed to get original directory";
 
-        # Can we locate the distribution root
+		# Can we locate the distribution root
 	my ($v,$d,$f) = splitpath($ENV{PWD}, 'nofile');
 	my @dirs      = splitdir($d);
 	while ( @dirs ) {
@@ -271,9 +271,9 @@ sub main {
 		Cwd::chdir($distroot);
 		last;
 	}
-        unless ( in_distroot ) {
-                error "Failed to locate the distribution root";
-        }
+		unless ( in_distroot ) {
+				error "Failed to locate the distribution root";
+		}
 
 	# Makefile.PL? Or Build.PL?
 	my $BUILD_SYSTEM = has_buildpl ? 'build' : has_makefilepl ? 'make' : '';
@@ -312,7 +312,7 @@ sub main {
 			}
 		}
 
-        } else {
+		} else {
 		# Get the list of possible tests
 		my @directory = ( 't', has_xt ? 'xt' : () );
 		my @possible  = File::Find::Rule->name('*.t')->file->in(@directory);
@@ -327,8 +327,8 @@ sub main {
 		}
 		if ( @$matches > 1 ) {
 			error(
-			        "More than one possible test",
-		        	map { "  $_" } sort @$matches,
+					"More than one possible test",
+					map { "  $_" } sort @$matches,
 			);
 		}
 		$script = $matches->[0];
@@ -340,14 +340,14 @@ sub main {
 		error "Test script '$script' does not exist";
 	}
 
-        # Rerun make or Build if needed
+		# Rerun make or Build if needed
 	if ( $BUILD_SYSTEM eq 'make' ) {
 		# Do NOT run make if there is no Makefile.PL, because it likely means
 		# there is a hand-written Makefile and NOT one derived from Makefile.PL,
 		# and we have no idea what functionality we might trigger.
-        	if ( in_distroot and has_makefile and has_makefilepl ) {
-	                run( make );
-	        }
+			if ( in_distroot and has_makefile and has_makefilepl ) {
+					run( make );
+			}
 	} elsif ( $BUILD_SYSTEM eq 'build' ) {
 		if ( in_distroot and has_build and has_buildpl ) {
 			run( Build );
@@ -423,12 +423,12 @@ sub filter {
 
 sub help { print <<'END_HELP'; exit(0); }
 Usage:
-    pler [options] [file/pattern]
+	pler [options] [file/pattern]
 
 Options:
-        -V              Print the pler version
-        -h, --help      Display this help
-        -w              Run test with the -w warnings flag
+		-V              Print the pler version
+		-h, --help      Display this help
+		-w              Run test with the -w warnings flag
 END_HELP
 
 1;
