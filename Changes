@@ -1,5 +1,8 @@
 Revision history for Perl extension pler
 
+1.07 Mon 30 Sep 2013
+	- Allow command-line arguments to be passed to test files (jkeroes)
+
 1.06 Thu 10 Jun 2010
 	- Apply rel2abs to the PERL5LIB additions so that path-changing
 	  tests can still load modules properly.
