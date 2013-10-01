@@ -16,7 +16,7 @@ use Probe::Perl           0.01 ();
 
 use vars qw{$VERSION};
 BEGIN {
-        $VERSION = '1.06';
+		$VERSION = '1.07';
 }
 
 # Does exec work on this platform
@@ -197,7 +197,7 @@ sub verbose ($) {
 }
 
 sub message ($) {
-        print $_[0];
+		print $_[0];
 }
 
 sub error (@) {
@@ -225,9 +225,6 @@ sub handoff (@) {
 }
 
 
-
-
-
 #####################################################################
 # Main Script
 
@@ -237,7 +234,7 @@ sub main {
 	Getopt::Long::Configure('no_ignore_case');
 	Getopt::Long::GetOptions(
 		'help' => \&help,
-		'V'    => sub { print "pler $VERSION\n"; exit(0) }, 
+		'V'    => sub { print "pler $VERSION\n"; exit(0) },
 		'w'    => sub { push @SWITCHES, '-w' },
 	);
 
@@ -254,7 +251,7 @@ sub main {
 	Cwd::chdir(curdir());
 	my $orig = $ENV{PWD} or die "Failed to get original directory";
 
-        # Can we locate the distribution root
+	# Can we locate the distribution root
 	my ($v,$d,$f) = splitpath($ENV{PWD}, 'nofile');
 	my @dirs      = splitdir($d);
 	while ( @dirs ) {
@@ -268,15 +265,16 @@ sub main {
 			pop @dirs;
 			next;
 		}
+$DB::single++;
 
 		# This is a distroot
-		my $distroot = catpath( $v, catdir(@dirs), undef );
+		my $distroot = catpath( $v, catdir(@dirs), "" );
 		Cwd::chdir($distroot);
 		last;
 	}
-        unless ( in_distroot ) {
-                error "Failed to locate the distribution root";
-        }
+		unless ( in_distroot ) {
+				error "Failed to locate the distribution root";
+		}
 
 	# Makefile.PL? Or Build.PL?
 	my $BUILD_SYSTEM = has_buildpl ? 'build' : has_makefilepl ? 'make' : '';
@@ -315,7 +313,7 @@ sub main {
 			}
 		}
 
-        } else {
+		} else {
 		# Get the list of possible tests
 		my @directory = ( 't', has_xt ? 'xt' : () );
 		my @possible  = File::Find::Rule->name('*.t')->file->in(@directory);
@@ -330,8 +328,8 @@ sub main {
 		}
 		if ( @$matches > 1 ) {
 			error(
-			        "More than one possible test",
-		        	map { "  $_" } sort @$matches,
+					"More than one possible test",
+					map { "  $_" } sort @$matches,
 			);
 		}
 		$script = $matches->[0];
@@ -343,14 +341,14 @@ sub main {
 		error "Test script '$script' does not exist";
 	}
 
-        # Rerun make or Build if needed
+		# Rerun make or Build if needed
 	if ( $BUILD_SYSTEM eq 'make' ) {
 		# Do NOT run make if there is no Makefile.PL, because it likely means
 		# there is a hand-written Makefile and NOT one derived from Makefile.PL,
 		# and we have no idea what functionality we might trigger.
-        	if ( in_distroot and has_makefile and has_makefilepl ) {
-	                run( make );
-	        }
+			if ( in_distroot and has_makefile and has_makefilepl ) {
+					run( make );
+			}
 	} elsif ( $BUILD_SYSTEM eq 'build' ) {
 		if ( in_distroot and has_build and has_buildpl ) {
 			run( Build );
@@ -391,7 +389,7 @@ sub main {
 	unless ( pler->is_verbose ) {
 		message( "# Debugging $script...\n" );
 	}
-	my @cmd = ( perl, @flags, '-d', $script );
+	my @cmd = ( perl, @flags, '-d', $script, @ARGV );
 	local $ENV{PERL5LIB} = defined($ENV{PERL5LIB})
 		? join( $path_sep, @PERL5LIB, $ENV{PERL5LIB} )
 		: join( $path_sep, @PERL5LIB );
@@ -426,12 +424,12 @@ sub filter {
 
 sub help { print <<'END_HELP'; exit(0); }
 Usage:
-    pler [options] [file/pattern]
+	pler [options] [file/pattern] [-- arguments for test files]
 
 Options:
-        -V              Print the pler version
-        -h, --help      Display this help
-        -w              Run test with the -w warnings flag
+		-V              Print the pler version
+		-h, --help      Display this help
+		-w              Run test with the -w warnings flag
 END_HELP
 
 1;
@@ -456,6 +454,13 @@ B<pler> checks that the environment is sound, runs some cleanup tasks
 if needed, makes sure you are in the right directory, and then hands off
 to the perl debugger as normal.
 
+Command-line arguments are assumed to be test files or substrings of
+filenames. pler will search through the t/ and xt/ subdirectories and
+test all matching files.
+
+Arguments can be passed to the test file(s) on the command line after
+a --.
+
 =head1 TO DO
 
 - Tweak some small terminal related issues on Win32
@@ -478,7 +483,7 @@ L<prove>, L<http://ali.as/>
 
 =head1 COPYRIGHT
 
-Copyright 2006 - 2010 Adam Kennedy.
+Copyright 2006 - 2013 Adam Kennedy.
 
 This program is free software; you can redistribute
 it and/or modify it under the same terms as Perl itself.

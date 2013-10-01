@@ -18,6 +18,8 @@ README
 script/pler
 t/01_compile.t
 t/02_functions.t
+t/03_test_args.t
+t/ext/print_args.t
 xt/meta.t
 xt/pmv.t
 xt/pod.t
